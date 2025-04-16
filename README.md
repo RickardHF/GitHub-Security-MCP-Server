@@ -10,7 +10,8 @@ The server currently provides the following tools:
 
 - **GitHub User Information**: Retrieve details about a GitHub user by username
 - **Security Issue Creation**: Create security issues in GitHub repositories with appropriate formatting and labels
-- **Dynamic Greeting**: A simple greeting resource that responds to name parameters
+- **List Security Issues**: List all security-related issues in a GitHub repository
+- **Security Status Reporting**: Get comprehensive security alerts including Dependabot, code scanning, and secret scanning
 
 ## Prerequisites
 
@@ -44,7 +45,23 @@ npm run inspect
 
 #### Running Latest Publised Version
 
-To use the latest publised version, you can choose to add a new tool, select node and use the package `@rickardhf/github-security-mcp-server`.
+To use the latest publised version, you can choose to add a new tool, select `Command (stdio)` and use the command `npx @rickardhf/github-security-mcp-server`.
+
+If you want to just change the `mcp.json` config file, you can use this configuration
+```json
+{
+    "servers": {
+        "my-local-mcp-server": {
+            "type": "stdio",
+            "command": "npx",
+            "args": [
+                "@rickardhf/github-security-mcp-server"
+            ]
+        }
+    },
+    ...
+}
+```
 
 #### Running Local Version
 
@@ -90,11 +107,30 @@ Get information about the GitHub user "octocat"
 ```
 
 #### Create Security Issue
-Creates a security issue in a GitHub repository with proper formatting.
+Creates a security issue in a GitHub repository with proper formatting and security-related labels.
 
 Example:
 ```
 Create a security issue for XSS vulnerability in the login form
+```
+
+#### List Security Issues
+Lists all security issues in a GitHub repository that have both the "bug" and "security" labels.
+
+Example:
+```
+List security issues in the repository "owner/repo-name"
+```
+
+#### Get Security Status
+Retrieves the security status of a GitHub repository, including:
+- Dependabot alerts
+- Code scanning alerts
+- Secret scanning alerts
+
+Example:
+```
+Get security status for the repository "owner/repo-name"
 ```
 
 ## Project Structure
