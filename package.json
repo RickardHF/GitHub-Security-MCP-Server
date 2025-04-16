@@ -1,21 +1,30 @@
 {
-  "name": "github-security-mcp-server",
+  "name": "@rickardhf/github-security-mcp-server",
   "version": "1.0.0",
   "main": "dist/index.js",
   "type": "module",
+  "homepage": "https://github.com/RickardHF/GitHub-Security-MCP-Server#readme",
   "scripts": {
-    "build": "tsc",
+    "build": "node -e \"if (process.platform === 'win32') { require('child_process').execSync('tsc'); } else { require('child_process').execSync('tsc && shx chmod +x dist/*.js'); }\"",
     "start": "npm run build && node dist/index.js",
     "dev": "tsc --watch",
-    "inspect": "npm run build && npx @modelcontextprotocol/inspector node dist/index.js"
+    "inspect": "npm run build && npx @modelcontextprotocol/inspector node dist/index.js",
+    "local-install": "npm install -g ."
+  },
+  "bin": {
+    "github-security-mcp-server": "./dist/index.js"
   },
   "files": [
     "dist"
   ],
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "repository": "github:RickardHF/GitHub-Security-MCP-Server",
+  "keywords": ["mcp", "mcp-server", "github-security", "github-security-mcp-server", "ai", "ghas"],
+  "author": "Rickard Hole Falck",
+  "license": "MIT",
   "description": "",
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "@types/express": "^5.0.1",
     "@types/node": "^22.14.1",

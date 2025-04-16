@@ -14,7 +14,7 @@ The server currently provides the following tools:
 
 ## Prerequisites
 
-- Node.js (v16 or higher recommended)
+- Node.js 
 - npm (included with Node.js)
 - GitHub CLI (gh) installed and authenticated
 
@@ -42,6 +42,10 @@ npm run inspect
 
 ### VS Code Integration
 
+#### Running Latest Publised Version
+
+To use the latest publised version, you can choose to add a new tool, select node and use the package `@rickardhf/github-security-mcp-server`.
+
 #### Running Local Version
 
 To use the local version of the mcp server in your editor you can run the built file of your project in a similar way to what is displayed under here. You simply add this server configuration to the `mcp.json` file, either globally or for that specific workspace. 
@@ -54,6 +58,21 @@ To use the local version of the mcp server in your editor you can run the built 
             "command": "node",
             "args": [
                 "c:\\repos\\private\\mcptest\\dist\\index.js"
+            ]
+        }
+    }
+}
+```
+
+If you first run the command `npm run local-install` it will install it globally on your local computer. Then you can run it by using the following configuration
+```json
+{
+    "servers": {
+        "my-local-mcp-server": {
+            "type": "stdio",
+            "command": "npx",
+            "args": [
+                "github-security-mcp-server"
             ]
         }
     }
