@@ -12,6 +12,8 @@ The server currently provides the following tools:
 - **Security Issue Creation**: Create security issues in GitHub repositories with appropriate formatting and labels
 - **List Security Issues**: List all security-related issues in a GitHub repository
 - **Security Status Reporting**: Get comprehensive security alerts including Dependabot, code scanning, and secret scanning
+- **Branch Management**: List branches and create new branches in a GitHub repository
+- **Pull Request Creation**: Create pull requests between branches
 
 ## Prerequisites
 
@@ -133,6 +135,30 @@ Example:
 Get security status for the repository "owner/repo-name"
 ```
 
+#### List Branches
+Lists all branches in a GitHub repository with information about the latest commit, protection status, and whether it's the default branch.
+
+Example:
+```
+List branches in the repository "owner/repo-name"
+```
+
+#### Create New Branch
+Creates a new branch in a GitHub repository based on an existing branch.
+
+Example:
+```
+Create a new branch called "feature-branch" based on "main" in "owner/repo-name"
+```
+
+#### Create Pull Request
+Creates a new pull request between two branches in a GitHub repository.
+
+Example:
+```
+Create a pull request from "feature-branch" to "main" in "owner/repo-name" titled "New Feature Implementation"
+```
+
 ## Project Structure
 
 - **src/index.ts**: Main entry point and server configuration
@@ -140,5 +166,11 @@ Get security status for the repository "owner/repo-name"
   - **utils.ts**: Shared utility functions (GitHub token retrieval)
   - **types.ts**: TypeScript type definitions
 - **src/operations/**: Tool implementations
-  - **process.ts**: Security issue creation functionality
+  - **process.ts**: Tool registration and mapping
+  - **security.ts**: Security status reporting functionality
+  - **api/**: GitHub API operations
+    - **branch.ts**: Branch management operations
+    - **issues.ts**: Security issue operations
+    - **pull-requests.ts**: Pull request operations
+    - **repo.ts**: Repository operations
 

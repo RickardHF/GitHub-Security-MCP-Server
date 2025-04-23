@@ -1,60 +1,12 @@
 import { z } from "zod";
-import { getGitHubToken } from "../common/utils.js";
-import { ToolFunctionMapper } from "../common/types.js";
+import { 
+    ToolFunctionMapper, 
+} from "../common/types.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp";
+import { createPullRequest, getPullRequest } from "./api/pull-requests.js";
+import { createSecurityIssueFunction, listSecurityIssues } from "./api/issues.js";
+import { createNewBranch, listBranches } from "./api/branch.js";
 
-async function CreateSecurityIssueFunction(owner: string, repository: string, title: string, body: string, assignees: string[]) {
-    // Create a security issue in the GitHub repository
-    try {        
-        const token = getGitHubToken();
-        const response = await fetch(`https://api.github.com/repos/${owner}/${repository}/issues`, {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Accept": "application/vnd.github+json",
-                "X-GitHub-Api-Version": "2022-11-28"
-            },
-            body: JSON.stringify({
-                title: ":warning: [ Security Issue ] - " + title,
-                body,
-                type: "bug",
-                labels: ["security", "bug"],
-                assignees: assignees
-            })
-        });
-        const json = await response.json();
-        return {
-            status: response.status,
-            url: json.url
-        }
-    } catch (error: Error | any ) {
-        console.error(error);
-        return {
-            status: 500,
-            error: error.message
-        }
-    }
-}
-
-async function listSecurityIssues(owner: string, repository: string) {
-    // List security issues in the GitHub repository
-    try {
-        const token = getGitHubToken();
-        const response = await fetch(`https://api.github.com/repos/${owner}/${repository}/issues?labels=bug,security`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-        const json = await response.json();
-        return json;
-    } catch (error: Error | any) {
-        console.error(error);
-        return {
-            status: 500,
-            error: error.message
-        }
-    }
-}
 
 const map_list_security_issues = (server: McpServer) => {
     server.tool(
@@ -90,7 +42,110 @@ const map_create_security_issue = (server: McpServer) => {
             content: [
                 {
                     "type": "text",
-                    "text": JSON.stringify(await CreateSecurityIssueFunction(owner, repository, title, body, assignees))
+                    "text": JSON.stringify(await createSecurityIssueFunction(owner, repository, title, body, assignees))
+                }
+            ]
+        })
+    )
+}
+
+const map_create_new_branch = (server: McpServer) => {
+    server.tool(
+        "create-new-branch",
+        "Create a new branch in a GitHub repository.",
+        {
+            owner: z.string(),
+            repository: z.string(),
+            branchName: z.string(),
+            baseBranch: z.string()
+        },
+        async ({ owner, repository, branchName, baseBranch }) => ({
+            content: [
+                {
+                    "type": "text",
+                    "text": JSON.stringify(await createNewBranch(owner, repository, branchName, baseBranch))
+                }
+            ]
+        })
+    )
+}
+
+const map_create_new_pull_request = (server: McpServer) => {
+    server.tool(
+        "create-new-pull-request",
+        "Create a new pull request in a GitHub repository.",
+        {
+            owner: z.string(),
+            repository: z.string(),
+            branchName: z.string(),
+            baseBranch: z.string(),
+            title: z.string(),
+            body: z.string()
+        },
+        async ({ owner, repository, branchName, baseBranch, title, body }) => ({
+            content: [
+                {
+                    "type": "text",
+                    "text": JSON.stringify(await createPullRequest(owner, repository, branchName, baseBranch, title, body))
+                }
+            ]
+        })
+    )
+}
+
+const map_get_pull_requests = (server: McpServer) => {
+    server.tool(
+        "get-pull-requests",
+        "Get all pull requests in a GitHub repository.",
+        {
+            owner: z.string(),
+            repository: z.string(),
+            pullNumber: z.number()
+        },
+        async ({ owner, repository, pullNumber }) => ({
+            content: [
+                {
+                    "type": "text",
+                    "text": JSON.stringify(await getPullRequest(owner, repository, pullNumber))
+                }
+            ]
+        })
+    )
+}
+
+const map_get_pull_request = (server: McpServer) => {
+    server.tool(
+        "get-pull-request",
+        "Get a pull request in a GitHub repository.",
+        {
+            owner: z.string(),
+            repository: z.string(),
+            pullNumber: z.number()
+        },
+        async ({ owner, repository, pullNumber }) => ({
+            content: [
+                {
+                    "type": "text",
+                    "text": JSON.stringify(await getPullRequest(owner, repository, pullNumber))
+                }
+            ]
+        })
+    )
+}
+
+const map_list_branches = (server: McpServer) => {
+    server.tool(
+        "list-branches",
+        "List branches in a GitHub repository.",
+        {
+            owner: z.string(),
+            repository: z.string()
+        },
+        async ({ owner, repository }) => ({
+            content: [
+                {
+                    "type": "text",
+                    "text": JSON.stringify(await listBranches(owner, repository))
                 }
             ]
         })
@@ -100,4 +155,9 @@ const map_create_security_issue = (server: McpServer) => {
 export const map_process_tools: ToolFunctionMapper = (server: McpServer) => {
     map_create_security_issue(server);
     map_list_security_issues(server);
+    map_create_new_branch(server);
+    map_create_new_pull_request(server);
+    map_list_branches(server);
+    map_get_pull_request(server);
+    map_get_pull_requests(server);
 };
