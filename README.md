@@ -25,7 +25,7 @@ The server currently provides the following tools:
 
 This MCP server is using the GitHub CLI to get a token for the current authenticated user, and use this for authentication purposes.
 
-## Usage
+## Running Locally
 
 ### Starting the Server
 
@@ -98,6 +98,8 @@ If you first run the command `npm run local-install` it will install it globally
 }
 ```
 
+## Usage
+
 ### Available Tools
 
 #### Get GitHub User
@@ -158,6 +160,13 @@ Example:
 ```
 Create a pull request from "feature-branch" to "main" in "owner/repo-name" titled "New Feature Implementation"
 ```
+
+### AI Agent not picking up on the tools
+
+Sometimes we experience that the AI agents are not piking up on the tools, like in the following example. Specifying that it should use tools seems to work.
+
+![image](https://github.com/user-attachments/assets/7e2e0d26-0c59-42ae-a6f0-50fadd0b3ea7)
+
 
 ## Project Structure
 
