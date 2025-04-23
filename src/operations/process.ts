@@ -93,6 +93,26 @@ const map_create_new_pull_request = (server: McpServer) => {
     )
 }
 
+const map_get_pull_requests = (server: McpServer) => {
+    server.tool(
+        "get-pull-requests",
+        "Get all pull requests in a GitHub repository.",
+        {
+            owner: z.string(),
+            repository: z.string(),
+            pullNumber: z.number()
+        },
+        async ({ owner, repository, pullNumber }) => ({
+            content: [
+                {
+                    "type": "text",
+                    "text": JSON.stringify(await getPullRequest(owner, repository, pullNumber))
+                }
+            ]
+        })
+    )
+}
+
 const map_get_pull_request = (server: McpServer) => {
     server.tool(
         "get-pull-request",
@@ -139,4 +159,5 @@ export const map_process_tools: ToolFunctionMapper = (server: McpServer) => {
     map_create_new_pull_request(server);
     map_list_branches(server);
     map_get_pull_request(server);
+    map_get_pull_requests(server);
 };

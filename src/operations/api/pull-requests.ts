@@ -37,6 +37,37 @@ export async function createPullRequest(owner: string, repository: string, branc
     }
 }
 
+export async function getPullRequests(owner: string, repository: string) {
+    // Get pull requests in the GitHub repository
+    try {
+        const token = getGitHubToken();
+        const response = await fetch(`https://api.github.com/repos/${owner}/${repository}/pulls`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        const json = await response.json();
+
+        const pullRequests = json.map((pullRequest: any) => {
+            return {
+                id: pullRequest.id,
+                number: pullRequest.number,
+                state: pullRequest.state,
+                title: pullRequest.title,
+                body: pullRequest.body
+            }
+        });
+
+        return pullRequests;
+    } catch (error: Error | any) {
+        console.error(error);
+        return {
+            status: 500,
+            error: error.message
+        }
+    }
+}
+
 export async function getPullRequest(owner: string, repository: string, pullNumber: number) {
     // Get a pull request in the GitHub repository
     try {
