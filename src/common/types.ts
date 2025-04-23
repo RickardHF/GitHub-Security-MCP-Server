@@ -16,3 +16,28 @@ export type BranchResponseType = Partial<ErrorResponse> & {
     name: string | undefined, 
     sha: string | undefined
 };
+
+export type PullRequestDiff = Partial<ErrorResponse> & {
+    diff: string
+};
+
+type PullRequestComment = {
+    id: number,
+    user: string,
+    body: string,
+    diff_hunk: string,
+    subject_type: string,
+    path: string,
+    position: number,
+    original_position: number,
+    commit_id: string,
+    original_commit_id: string,
+    start_line: number,
+    original_start_line: number,
+    line: number,
+    original_line: number
+};
+
+export type PullRequestComments = Partial<ErrorResponse> & {
+    comments: Partial<PullRequestComment>[]
+};

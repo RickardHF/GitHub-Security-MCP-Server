@@ -166,5 +166,11 @@ Create a pull request from "feature-branch" to "main" in "owner/repo-name" title
   - **utils.ts**: Shared utility functions (GitHub token retrieval)
   - **types.ts**: TypeScript type definitions
 - **src/operations/**: Tool implementations
-  - **process.ts**: Security issue creation functionality
+  - **process.ts**: Tool registration and mapping
+  - **security.ts**: Security status reporting functionality
+  - **api/**: GitHub API operations
+    - **branch.ts**: Branch management operations
+    - **issues.ts**: Security issue operations
+    - **pull-requests.ts**: Pull request operations
+    - **repo.ts**: Repository operations
 
