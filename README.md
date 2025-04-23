@@ -13,7 +13,10 @@ The server currently provides the following tools:
 - **List Security Issues**: List all security-related issues in a GitHub repository
 - **Security Status Reporting**: Get comprehensive security alerts including Dependabot, code scanning, and secret scanning
 - **Branch Management**: List branches and create new branches in a GitHub repository
-- **Pull Request Creation**: Create pull requests between branches
+- **Pull Request Management**: 
+  - Create pull requests between branches
+  - List pull requests for a specific repository, includes basic information such as PR number, title and description.
+  - Get detailed information about a specific pull request with diffs and comments
 
 ## Prerequisites
 
@@ -159,6 +162,14 @@ Creates a new pull request between two branches in a GitHub repository.
 Example:
 ```
 Create a pull request from "feature-branch" to "main" in "owner/repo-name" titled "New Feature Implementation"
+```
+
+#### Get Pull Request
+Retrieves detailed information about a specific pull request, including the diff and comments.
+
+Example:
+```
+Get pull request #42 from the repository "owner/repo-name"
 ```
 
 ### AI Agent not picking up on the tools
