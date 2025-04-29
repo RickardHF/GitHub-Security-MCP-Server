@@ -33,6 +33,26 @@ export async function createSecurityIssueFunction(owner: string, repository: str
     }
 }
 
+export async function listAllOpenIssues(owner: string, repository: string) {
+    // List all open issues in the GitHub repository
+    try {
+        const token = getGitHubToken();
+        const response = await fetch(`https://api.github.com/repos/${owner}/${repository}/issues`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        const json = await response.json();
+        return json;
+    } catch (error: Error | any) {
+        console.error(error);
+        return {
+            status: 500,
+            error: error.message
+        }
+    }
+}
+
 export async function listSecurityIssues(owner: string, repository: string) {
     // List security issues in the GitHub repository
     try {

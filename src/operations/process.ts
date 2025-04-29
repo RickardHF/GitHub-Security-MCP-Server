@@ -4,7 +4,7 @@ import {
 } from "../common/types.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp";
 import { createPullRequest, getPullRequest } from "./api/pull-requests.js";
-import { createSecurityIssueFunction, listSecurityIssues } from "./api/issues.js";
+import { createSecurityIssueFunction, listAllOpenIssues, listSecurityIssues } from "./api/issues.js";
 import { createNewBranch, listBranches } from "./api/branch.js";
 
 
@@ -21,6 +21,25 @@ const map_list_security_issues = (server: McpServer) => {
                 {
                     "type": "text",
                     "text": JSON.stringify(await listSecurityIssues(owner, repository))
+                }
+            ]
+        })
+    )
+}
+
+const map_list_open_issues = (server: McpServer) => {
+    server.tool(
+        "list-open-issues",
+        "List all open issues in a GitHub repository.",
+        {
+            owner: z.string(),
+            repository: z.string()
+        },
+        async ({ owner, repository }) => ({
+            content: [
+                {
+                    "type": "text",
+                    "text": JSON.stringify(await listAllOpenIssues(owner, repository))
                 }
             ]
         })
@@ -155,6 +174,7 @@ const map_list_branches = (server: McpServer) => {
 export const map_process_tools: ToolFunctionMapper = (server: McpServer) => {
     map_create_security_issue(server);
     map_list_security_issues(server);
+    map_list_open_issues(server);
     map_create_new_branch(server);
     map_create_new_pull_request(server);
     map_list_branches(server);
